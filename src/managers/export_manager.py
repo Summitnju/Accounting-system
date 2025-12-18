@@ -33,23 +33,23 @@ class ExportManager:
             transactions = self.transaction_manager.get_transactions()
         
         try:
-            csvfile = open(filename, 'w', newline='', encoding='utf-8-sig')
-            fieldnames = ['日期', '类型', '分类', '金额', '备注']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            with open(filename, 'w', newline='', encoding='utf-8-sig') as csvfile:
+                fieldnames = ['日期', '类型', '分类', '金额', '备注']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 
-            writer.writeheader()
-            for trans in transactions:
-                cat = self.category_manager.get_category_by_id(trans.category_id)
-                cat_name = cat.name if cat else '未分类'
+                writer.writeheader()
+                for trans in transactions:
+                    cat = self.category_manager.get_category_by_id(trans.category_id)
+                    cat_name = cat.name if cat else '未分类'
                     
-                writer.writerow({
-                    '日期': trans.date.strftime('%Y-%m-%d %H:%M:%S'),
-                    '类型': trans.type.value,
-                    '分类': cat_name,
-                    '金额': trans.amount,
-                    '备注': trans.note
-                })
-                pass
+                    writer.writerow({
+                        '日期': trans.date.strftime('%Y-%m-%d %H:%M:%S'),
+                        '类型': trans.type.value,
+                        '分类': cat_name,
+                        '金额': trans.amount,
+                        '备注': trans.note
+                    })
+                
             return True
         except Exception as e:
             print(f"导出失败: {str(e)}")

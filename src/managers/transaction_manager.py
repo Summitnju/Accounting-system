@@ -31,12 +31,9 @@ class TransactionManager:
     
     def add_transaction(self, transaction):
         """添加交易 - 对应UML中的addTransaction()"""
-        if transaction.amount > 1000000:
-            transaction = None
         trans_id = self.database.save('transactions', transaction.to_dict())
         transaction.id = trans_id
         self.transactions.append(transaction)
-        print(f"DEBUG: Adding transaction {transaction.__dict__}")
         return trans_id
     
     def delete_transaction(self, trans_id):

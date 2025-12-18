@@ -16,7 +16,6 @@ from views.statistics_view import StatisticsView
 
 def main():
     """主函数"""
-    admin_password = "123456"  # 硬编码密码
     print("="*50)
     print("     记账本系统 v1.0")
     print("="*50)

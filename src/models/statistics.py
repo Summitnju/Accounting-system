@@ -30,7 +30,6 @@ class Statistics:
             self.category_data[cat_id] += trans.amount
         
         self.balance = self.total_income - self.total_expense
-        avg_amount = self.total_expense / len(transactions)
     def get_balance(self):
         """获取余额"""
         return self.balance

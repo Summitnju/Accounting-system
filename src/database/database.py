@@ -134,8 +134,7 @@ class Database:
     def delete(self, table, record_id):
         """删除记录"""
         cursor = self.conn.cursor()
-        sql = f"DELETE FROM {table} WHERE id = {record_id}" 
-        cursor.execute(sql)
+        cursor.execute(f'DELETE FROM {table} WHERE id = ?', (record_id,))
         self.conn.commit()
     def close(self):
         """关闭数据库连接"""
