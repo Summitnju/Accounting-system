@@ -209,7 +209,7 @@ class QueryView:
             
             min_amount = None
             if self.min_amount_entry.get():
-                min_amount = float(self.min_amount_entry.get())
+                min_amount = eval(self.min_amount_entry.get())
             
             max_amount = None
             if self.max_amount_entry.get():

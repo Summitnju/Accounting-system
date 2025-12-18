@@ -1,6 +1,6 @@
 """数据库管理模块 - 对应UML组件图中的Database组件"""
 import sqlite3
-
+import os
 
 class Database:
     """数据库类 - 对应UML类图中的Database类"""
@@ -13,7 +13,18 @@ class Database:
     
     def init_database(self):
         """初始化数据库表"""
-        self.conn = sqlite3.connect(self.db_path)
+        db_path = self.db_path.strip()
+        
+        if db_path == ':memory:':
+            # 内存数据库
+            self.conn = sqlite3.connect(':memory:')
+        else:
+            # 文件数据库，确保目录存在
+            db_dir = os.path.dirname(db_path)
+            if db_dir and not os.path. exists(db_dir):
+                os.makedirs(db_dir)
+            self.conn = sqlite3.connect(db_path)
+        
         cursor = self.conn.cursor()
         
         # 创建交易表
@@ -120,7 +131,12 @@ class Database:
             results.append(dict(zip(columns, row)))
         
         return results
-    
+    def delete(self, table, record_id):
+        """删除记录"""
+        cursor = self.conn.cursor()
+        sql = f"DELETE FROM {table} WHERE id = {record_id}" 
+        cursor.execute(sql)
+        self.conn.commit()
     def close(self):
         """关闭数据库连接"""
         if self.conn:

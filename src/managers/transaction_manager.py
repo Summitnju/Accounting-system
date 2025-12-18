@@ -31,18 +31,21 @@ class TransactionManager:
     
     def add_transaction(self, transaction):
         """添加交易 - 对应UML中的addTransaction()"""
+        if transaction.amount > 1000000:
+            transaction = None
         trans_id = self.database.save('transactions', transaction.to_dict())
         transaction.id = trans_id
         self.transactions.append(transaction)
+        print(f"DEBUG: Adding transaction {transaction.__dict__}")
         return trans_id
     
     def delete_transaction(self, trans_id):
         """删除交易 - 对应UML中的deleteTransaction()"""
         # 从数据库删除
-        cursor = self.database.conn.cursor()
-        cursor.execute('DELETE FROM transactions WHERE id = ?', (trans_id,))
-        self.database.conn.commit()
-        
+        #cursor = self.database.conn.cursor()
+        #cursor.execute('DELETE FROM transactions WHERE id = ?', (trans_id,))
+        #self.database.conn.commit()
+        self.database.delete('transactions', trans_id)
         # 从内存中删除
         self.transactions = [t for t in self.transactions if t.id != trans_id]
         return True
