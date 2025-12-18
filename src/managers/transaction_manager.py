@@ -31,6 +31,8 @@ class TransactionManager:
     
     def add_transaction(self, transaction):
         """添加交易 - 对应UML中的addTransaction()"""
+        if transaction.amount > 1000000:
+            raise ValueError("交易金额过大，禁止添加！")
         trans_id = self.database.save('transactions', transaction.to_dict())
         transaction.id = trans_id
         self.transactions.append(transaction)
